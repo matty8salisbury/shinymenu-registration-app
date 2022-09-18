@@ -1,4 +1,4 @@
-#APP TO ALLOW AUTOMATED SET UP OF SHINYMENU APP SUITE
+#APP TO ALLOW AUTOMATED SET UP OF SHINYMENU APP SUITE inc orderApp and PubEnd
 
 #1. Set up: Install libraries and set working drive ----
 
