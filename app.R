@@ -139,15 +139,15 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE INFORMATION IN VENUE TEMPLATE
     
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"))
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman's Bar/", venueDisplayName, "/g"), "/home/shiny/OrderApp/venueinfo.R"))
-    system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"))
-    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"))
-    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"))
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman's Bar/", venueDisplayName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
+    #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
-    system2(command="sed", args = c("-i", "-e", paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"), "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh"))
+    system2(command="sed", args = c("-i", "-e", paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"), "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh"), stdout = TRUE, stderr = TRUE)
 
     #SAVE PRICE LIST TO CORRECT LOCATION
     
