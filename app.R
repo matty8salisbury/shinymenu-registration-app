@@ -149,9 +149,9 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
-    tx2  <- readLines("/home/shiny/OrderApp/shinymenu-startup.sh")
+    tx2  <- readLines("/home/shiny/OrderApp/GCP-shinymenu-startup.sh")
     tx2  <- gsub(pattern = "venuename", replace = gsub("_", "-", tolower(venueName)), x = tx2)
-    writeLines(tx2, con=paste("/home/shiny/OrderApp/shinymenu-startup.sh"))
+    writeLines(tx2, con=paste("/home/shiny/OrderApp/GCP-shinymenu-startup.sh"))
     
     #SAVE PRICE LIST TO CORRECT LOCATION
     
