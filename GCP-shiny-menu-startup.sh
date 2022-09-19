@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 ##########################################################################
 #DEPLOYMENT SCRIPT FOR SHINY MENU APPS ON GCP                            #
