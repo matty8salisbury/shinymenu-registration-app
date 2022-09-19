@@ -29,8 +29,8 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 
 #COPY ACROSS THE venueinfo.R FILE
 
-gcloud compute scp /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:/home/shiny/OrderApp/venueinfo.R --zone=europe-west1-b --quiet
+gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:/home/shiny/OrderApp/venueinfo.R
 
 #COPY ACROSS THE priceList FILE
 
-gcloud compute scp /home/shiny/OrderApp/priceList-venuename.R venuename-shinymenu-machine:/home/shiny/OrderApp/venueinfo.R --zone=europe-west1-b --quiet
+gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/priceList-venuename.R venuename-shinymenu-machine:/home/shiny/OrderApp/venueinfo.R
