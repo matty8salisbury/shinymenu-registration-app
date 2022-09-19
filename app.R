@@ -161,6 +161,10 @@ shinyServer <- function(input, output, session) {
       write.csv(x=priceList, file=paste("/home/shiny/OrderApp/priceList-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
     })
     
+    #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
+    
+    system2(command = '/home/shiny/GCP-shiny-menu-startup.sh')
+    
     #PREPARE CONFIRMATION OUTPUT TO USER
     
     output$venueName = renderText(
