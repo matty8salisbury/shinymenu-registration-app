@@ -163,8 +163,8 @@ shinyServer <- function(input, output, session) {
     
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
-    system2(command = "chmod", args=c("+x", "/home/shiny/shinymenu-registration-app/GCP-shiny-menu-startup.sh"))
-    system2(command = "bash", args=c('/home/shiny/shinymenu-registration-app/GCP-shiny-menu-startup.sh'))
+    system2(command = "chmod", args=c("+x", "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh"))
+    system2(command = "bash", args=c('/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh'))
     
     #PREPARE CONFIRMATION OUTPUT TO USER
     
