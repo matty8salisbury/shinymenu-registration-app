@@ -139,7 +139,7 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE INFORMATION IN VENUE TEMPLATE
     
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), shQuote("/home/shiny/OrderApp/venueinfo.R")), stdout = shQuote("/home/shiny/OrderApp/venueinfo.R"))
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), shQuote("/home/shiny/OrderApp/venueinfo.R")), stdout = "/home/shiny/OrderApp/venueinfo.R")
     #system2(command="sed", args = c("-i", "-e", paste0("s/", "Bananaman's Bar/", venueDisplayName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
@@ -153,9 +153,9 @@ shinyServer <- function(input, output, session) {
       "-i",
       "-e", 
       paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
-      shQuote("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh")
+      "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh"
       ), 
-      stdout = shQuote("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-edited.sh")
+      stdout = "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-edited.sh"
       )
 
     #SAVE PRICE LIST TO CORRECT LOCATION
