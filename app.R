@@ -139,7 +139,7 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE INFORMATION IN VENUE TEMPLATE
     
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), shQuote("/home/shiny/OrderApp/venueinfo.R")), stdout = "/home/shiny/OrderApp/venueinfo.R")
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = "/home/shiny/OrderApp/venueinfo.R")
     #system2(command="sed", args = c("-i", "-e", paste0("s/", "Bananaman's Bar/", venueDisplayName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
