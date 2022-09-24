@@ -53,7 +53,9 @@ shinyUI <- fluidPage(
              actionButton(inputId = "backButton", label = "Back"),
              
              #Confirm Submission button
-             actionButton(inputId = "confirmButton", label = "Confirm & Proceed")
+             actionButton(inputId = "confirmButton", label = "Confirm & Proceed"),
+             
+             helpText("After clicking 'Confirm & Proceed', please wait a few moments.  You will be redirected to a completion screen once the process is complete."),
     ),
     tabPanel(title = "Registration Complete", value = "panel3",
              
@@ -141,7 +143,7 @@ shinyServer <- function(input, output, session) {
     
     system2(command="cp", args = c("/home/shiny/OrderApp/venueinfo.R", paste0("/home/shiny/OrderApp/venueinfo-",venueName,".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman's Bar/", venueDisplayName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/",'"Bananaman',"'s ",'Bar"/','"', venueDisplayName, '"/g'), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
