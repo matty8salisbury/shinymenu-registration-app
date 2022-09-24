@@ -27,6 +27,9 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --source-machine-image=shinymenu-base-machine-image-001 \
 --quiet
 
+wait
+sleep 60
+
 #COPY ACROSS THE venueinfo.R FILE
 
 gcloud compute scp /home/shiny/OrderApp/venueinfo-venuename.R serviceAccount@venuename-shinymenu-machine:~/venueinfo.R --zone=europe-west1-b --quiet
