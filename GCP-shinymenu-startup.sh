@@ -29,10 +29,10 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 
 #COPY ACROSS THE venueinfo.R FILE
 
-gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:~venueinfo.R
-gcloud compute ssh --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv ~venueinfo.R /home/shiny/OrderApp/"
+gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:~/venueinfo.R
+gcloud compute ssh --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~/venueinfo.R /home/shiny/OrderApp/"
 
 #COPY ACROSS THE priceList FILE
 
-gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/price_list-venuename.csv venuename-shinymenu-machine:~price_list.csv
-gcloud compute ssh --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv ~price_list.csv /home/shiny/OrderApp/"
+gcloud compute scp --zone=europe-west1-b --quiet /home/shiny/OrderApp/price_list-venuename.csv venuename-shinymenu-machine:~/price_list.csv
+gcloud compute ssh --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~price_list.csv /home/shiny/OrderApp/"
