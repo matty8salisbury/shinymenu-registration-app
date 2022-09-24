@@ -139,7 +139,8 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE INFORMATION IN VENUE TEMPLATE
     
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = "/home/shiny/OrderApp/venueinfo.R")
+    system2(command="cp", args = c("/home/shiny/OrderApp/venueinfo.R", paste0("/home/shiny/OrderApp/venueinfo-",venueName,".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/", "Bananaman's Bar/", venueDisplayName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
     #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), "/home/shiny/OrderApp/venueinfo.R"), stdout = TRUE, stderr = TRUE)
@@ -147,16 +148,17 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
-    system2(
-      command="sed", 
-      args = c(
-      "-i",
-      "-e", 
-      paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
-      "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh"
-      ), 
-      stdout = "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-edited.sh"
-      )
+    #system2(command="cp", args = c("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh", paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")), stdout = TRUE)
+    #system2(
+    #  command="sed", 
+    #  args = c(
+    #  "-i",
+    #  "-e", 
+    #  paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
+    #  paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")
+    #  ), 
+    #  stdout = TRUE
+    #  )
 
     #SAVE PRICE LIST TO CORRECT LOCATION
     
@@ -179,8 +181,8 @@ shinyServer <- function(input, output, session) {
     
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
-    system2(command = "chmod", args=c("+x", "/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-edited.sh"))
-    system2(command = "bash", args=c('/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh'))
+    #system2(command = "chmod", args=c("+x", paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")))
+    #system2(command = "bash", args=c(paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")))
     
   })
   
