@@ -29,10 +29,10 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 
 #COPY ACROSS THE venueinfo.R FILE
 
-gcloud compute scp vm1-sa-001@shinymenu-test-01.iam.gserviceaccount.com@venuename-shinymenu-machine --zone=europe-west1-b --quiet /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:~/venueinfo.R
-gcloud compute ssh vm1-sa-001@shinymenu-test-01.iam.gserviceaccount.com@venuename-shinymenu-machine --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~/venueinfo.R /home/shiny/OrderApp/"
+gcloud compute scp serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet /home/shiny/OrderApp/venueinfo-venuename.R venuename-shinymenu-machine:~/venueinfo.R
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~/venueinfo.R /home/shiny/OrderApp/"
 
 #COPY ACROSS THE priceList FILE
 
-gcloud compute scp vm1-sa-001@shinymenu-test-01.iam.gserviceaccount.com@venuename-shinymenu-machine --zone=europe-west1-b --quiet /home/shiny/OrderApp/price_list-venuename.csv venuename-shinymenu-machine:~/price_list.csv
-gcloud compute ssh vm1-sa-001@shinymenu-test-01.iam.gserviceaccount.com@venuename-shinymenu-machine --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~price_list.csv /home/shiny/OrderApp/"
+gcloud compute scp serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet /home/shiny/OrderApp/price_list-venuename.csv venuename-shinymenu-machine:~/price_list.csv
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet venuename-shinymenu-machine --command "sudo mv -f ~price_list.csv /home/shiny/OrderApp/"
