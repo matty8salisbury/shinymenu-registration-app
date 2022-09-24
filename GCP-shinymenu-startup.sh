@@ -39,3 +39,7 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 
 gcloud compute scp /home/shiny/OrderApp/price_list-venuename.csv serviceAccount@venuename-shinymenu-machine:~/price_list.csv --zone=europe-west1-b --quiet
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/price_list.csv /home/shiny/OrderApp/"
+
+#SET UP USER IN SQL
+
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e CREATE USER 'sqlusername'@'localhost' IDENTIFIED BY sqlpassword; GRANT ALL PRIVILEGES ON *.* TO 'venuename'@'localhost' WITH GRANT OPTION;FLUSH PRIVILEGES;"

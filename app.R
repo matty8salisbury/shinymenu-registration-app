@@ -161,6 +161,28 @@ shinyServer <- function(input, output, session) {
       ), 
       stdout = TRUE
       )
+    
+    system2(
+      command="sed", 
+      args = c(
+        "-i",
+        "-e", 
+        paste0("s/sqlusername/", venueName, "/g"),
+        paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
+      ), 
+      stdout = TRUE
+    )
+    
+    system2(
+      command="sed", 
+      args = c(
+        "-i",
+        "-e", 
+        paste0("s/sqlpassword/", venuePassword, "/g"),
+        paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
+      ), 
+      stdout = TRUE
+    )
 
     #SAVE PRICE LIST TO CORRECT LOCATION
     
