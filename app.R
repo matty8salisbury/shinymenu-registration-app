@@ -141,12 +141,12 @@ shinyServer <- function(input, output, session) {
     
     #REPLACE INFORMATION IN VENUE TEMPLATE
     
-    system2(command="cp", args = c("/home/shiny/OrderApp/venueinfo.R", paste0("/home/shiny/OrderApp/venueinfo-",venueName,".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/",'"Bananaman',"'s ",'Bar"/','"', venueDisplayName, '"/g'), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", venueName, ".R")), stdout = TRUE)
+    system2(command="cp", args = c("/home/shiny/OrderApp/venueinfo.R", paste0("/home/shiny/OrderApp/venueinfo-",gsub("_", "-", tolower(venueName)),".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/",'"Bananaman',"'s ",'Bar"/','"', venueDisplayName, '"/g'), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
 
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
@@ -157,7 +157,7 @@ shinyServer <- function(input, output, session) {
       "-i",
       "-e", 
       paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
-      paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")
+      paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
       ), 
       stdout = TRUE
       )
@@ -167,7 +167,7 @@ shinyServer <- function(input, output, session) {
     output$priceList <- renderTable({
       file <- input$priceListfile
       priceList <- read.csv(file$datapath, header = T)
-      write.csv(x=priceList, file=paste("/home/shiny/OrderApp/priceList-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
+      write.csv(x=priceList, file=paste("/home/shiny/OrderApp/price_list-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
     })
     
     #PREPARE CONFIRMATION OUTPUT TO USER
@@ -184,7 +184,7 @@ shinyServer <- function(input, output, session) {
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
     #system2(command = "chmod", args=c("+x", paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")))
-    system2(command = "bash", args=c(paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",venueName,".sh")))
+    system2(command = "bash", args=c(paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")))
     
   })
   
