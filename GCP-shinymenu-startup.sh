@@ -35,4 +35,4 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 #COPY ACROSS THE priceList FILE
 
 gcloud compute scp /home/shiny/OrderApp/price_list-venuename.csv serviceAccount@venuename-shinymenu-machine:~/price_list.csv --zone=europe-west1-b --quiet
-gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~price_list.csv /home/shiny/OrderApp/"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/price_list.csv /home/shiny/OrderApp/"
