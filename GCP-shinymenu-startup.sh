@@ -42,4 +42,5 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 
 #SET UP USER IN SQL
 
-gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e CREATE USER 'sqlusername'@'localhost' IDENTIFIED BY sqlpassword; GRANT ALL PRIVILEGES ON *.* TO 'venuename'@'localhost' WITH GRANT OPTION;FLUSH PRIVILEGES;"
+#gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'CREATE USER sqlusername@localhost IDENTIFIED BY sqlpassword; GRANT ALL PRIVILEGES ON *.* TO venuename@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;'"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'CREATE USER sqlusername@localhost; GRANT ALL PRIVILEGES ON *.* TO venuename@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;'"
