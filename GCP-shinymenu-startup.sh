@@ -41,6 +41,10 @@ gcloud compute scp /home/shiny/OrderApp/price_list-venuename.csv serviceAccount@
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/price_list.csv /home/shiny/OrderApp/"
 
 #SET UP USER IN SQL
-
+MY_UID='sqluid'
+MY_PWD='sqlpwd'
 #gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'CREATE USER sqlusername@localhost IDENTIFIED BY sqlpassword; GRANT ALL PRIVILEGES ON *.* TO venuename@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;'"
-gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'CREATE USER sqlusername@localhost; GRANT ALL PRIVILEGES ON *.* TO venuename@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;'"
+VAR3="CREATE USER '${MY_UID}'@'localhost' IDENTIFIED BY '${MY_PWD}';"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e $VAR3"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'GRANT ALL PRIVILEGES ON *.* TO $(MY_UID) WITH GRANT OPTION;FLUSH PRIVILEGES;'"
+

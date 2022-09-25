@@ -183,6 +183,12 @@ shinyServer <- function(input, output, session) {
       ), 
       stdout = TRUE
     )
+    
+    #PASS SQL REQUIRED VARS
+    tx <- readLines(con = paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh"))
+    tx2 <- gsub("sqluid", venueName, x=tx)
+    tx2 <- gsub("sqlpwd", venuePassword, x=tx2)
+    writeLines(tx2, con = paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh"))
 
     #SAVE PRICE LIST TO CORRECT LOCATION
     
