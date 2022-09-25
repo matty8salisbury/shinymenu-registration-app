@@ -25,7 +25,11 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --shielded-integrity-monitoring \
 --reservation-affinity=any \
 --source-machine-image=shinymenu-base-machine-image-001 \
---quiet
+--quiet \
+--metadata=startup-script='#! /bin/bash
+sudo mysql -e "CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd'; GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;FLUSH PRIVILEGES;"'
+
+
 
 wait
 sleep 60
@@ -41,10 +45,11 @@ gcloud compute scp /home/shiny/OrderApp/price_list-venuename.csv serviceAccount@
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/price_list.csv /home/shiny/OrderApp/"
 
 #SET UP USER IN SQL
-MY_UID='sqluid'
-MY_PWD='sqlpwd'
+#MY_UID='sqluid'
+#MY_PWD='sqlpwd'
 #gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'CREATE USER sqlusername@localhost IDENTIFIED BY sqlpassword; GRANT ALL PRIVILEGES ON *.* TO venuename@localhost WITH GRANT OPTION;FLUSH PRIVILEGES;'"
-VAR3="CREATE USER '${MY_UID}'@'localhost' IDENTIFIED BY '${MY_PWD}';"
-gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e $VAR3"
-gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'GRANT ALL PRIVILEGES ON *.* TO $(MY_UID) WITH GRANT OPTION;FLUSH PRIVILEGES;'"
+#VAR3="CREATE USER '${MY_UID}'@'localhost' IDENTIFIED BY '${MY_PWD}';"
+#gcloud compute ssh serviceAccount@jaimie1s-place-w8-4px-shinymenu-machine --zone=europe-west1-b --quiet --command 'sudo mysql -e "CREATE USER '$MY_UID'@'localhost';"'
+#gcloud compute ssh serviceAccount@jaimie1s-place-w8-4px-shinymenu-machine --zone=europe-west1-b --quiet --command 'sudo mysql -e "SET PASSWORD FOR ‘$MY_UID’@’localhost’ = PASSWORD (‘$MY_PWD’);"'
+#gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mysql -e 'GRANT ALL PRIVILEGES ON *.* TO $MY_UID WITH GRANT OPTION;FLUSH PRIVILEGES;'"
 
