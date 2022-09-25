@@ -26,8 +26,12 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --reservation-affinity=any \
 --source-machine-image=shinymenu-base-machine-image-001 \
 --quiet \
---metadata=startup-script='#! /bin/bash
-sudo mysql -e "CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd'; GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;FLUSH PRIVILEGES;"'
+--metadata=startup-script="#!/bin/bash
+sudo mysql 
+CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd';
+GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit"
 
 
 
