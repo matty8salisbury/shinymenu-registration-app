@@ -25,18 +25,19 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --shielded-integrity-monitoring \
 --reservation-affinity=any \
 --source-machine-image=shinymenu-base-machine-image-001 \
---quiet \
---metadata=startup-script="#!/bin/bash
+--quiet
+
+wait
+sleep 60
+
+gcloud compute instances add-metadata venuename-shinymenu-machine \
+    --metadata=startup-script="#! /bin/bash
 sudo mysql 
 CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd';
 GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 exit"
 
-
-
-wait
-sleep 60
 
 #COPY ACROSS THE venueinfo.R FILE
 
