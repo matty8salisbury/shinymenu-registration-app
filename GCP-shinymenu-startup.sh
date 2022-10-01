@@ -14,7 +14,7 @@ gcloud compute addresses create venuename-ip \
     --global \
     --ip-version IPV4
 
-stat-ip=$(gcloud compute addresses describe --global venuename-ip --format="get(address)")
+statip=$(gcloud compute addresses describe --global venuename-ip --format="get(address)")
 
 #CREATE A VM FROM THE SHINY MENU BASE IMAGE
 
@@ -22,11 +22,11 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --project=shinymenu-test-01 \
 --zone=europe-west1-b \
 --machine-type=e2-micro \
-#--network-interface=network-tier=PREMIUM,subnet=default \
+--address=$statip \
 --metadata=startup-script=sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\ PRIVILEGES\;\" \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---service-account=shinymenu-user-sa-001.iam.gserviceaccount.com \
+--service-account=shinymenu-user-sa-001@shinymenu-test01.iam.gserviceaccount.com \
 --scopes=https://www.googleapis.com/auth/cloud-platform \
 --min-cpu-platform=Automatic \
 --tags=shiny-server,http-server,https-server \
@@ -34,7 +34,6 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --shielded-vtpm \
 --shielded-integrity-monitoring \
 --reservation-affinity=any \
---address=$stat-ip
 --source-machine-image=shinymenu-base-machine-image-001
 
 wait
