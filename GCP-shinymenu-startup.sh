@@ -62,7 +62,7 @@ gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.on
 
 #COPY ACROSS HTTP CONFIG FILE
 
-#gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
+#gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
 #gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
 
 
@@ -72,5 +72,5 @@ gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.on
 
 #COPY ACROSS HTTPS CONFIG FILE
 
-#gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
+#gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
 #gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
