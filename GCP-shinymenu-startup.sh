@@ -13,7 +13,7 @@
 gcloud compute addresses create venuename-ip \
     --region=europe-west1
 
-statip=$(gcloud compute addresses describe --global venuename-ip --format="get(address)")
+statip=$(gcloud compute addresses describe venuename-ip --region=europe=west1 --format="get(address)")
 
 #CREATE A VM FROM THE SHINY MENU BASE IMAGE
 
@@ -25,7 +25,7 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --metadata=startup-script=sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\ PRIVILEGES\;\" \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---service-account=shinymenu-user-sa-001@shinymenu-test01.iam.gserviceaccount.com \
+--service-account=shinymenu-user-sa-001@shinymenu-test-01.iam.gserviceaccount.com \
 --scopes=https://www.googleapis.com/auth/cloud-platform \
 --min-cpu-platform=Automatic \
 --tags=shiny-server,http-server,https-server \
