@@ -53,10 +53,10 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 
 #CREATE DNS
 
-gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.online. 
---type="A" 
---zone="shinymenu-zone" 
---rrdatas=$stat-ip
+gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.online. \
+--type="A" \
+--zone="shinymenu-zone" \
+--rrdatas=$statip \
 --ttl="300"
 
 #COPY ACROSS HTTP CONFIG FILE
