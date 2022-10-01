@@ -192,7 +192,7 @@ shinyServer <- function(input, output, session) {
       args = c(
         "-i",
         "-e", 
-        paste0("s/venuename/", venueName, "/g"),
+        paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
         paste0("/home/shiny/shinymenu-registration-app/http-",gsub("_", "-", tolower(venueName)),"-shiny.conf")
       ), 
       stdout = TRUE
@@ -203,7 +203,7 @@ shinyServer <- function(input, output, session) {
       args = c(
         "-i",
         "-e", 
-        paste0("s/venuename/", venueName, "/g"),
+        paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
         paste0("/home/shiny/shinymenu-registration-app/https-",gsub("_", "-", tolower(venueName)),"-shiny.conf")
       ), 
       stdout = TRUE
