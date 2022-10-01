@@ -13,7 +13,7 @@
 gcloud compute addresses create venuename-ip \
     --region=europe-west1
 
-statip=$(gcloud compute addresses describe venuename-ip --region=europe=west1 --format="get(address)")
+statip=$(gcloud compute addresses describe venuename-ip --region=europe-west1 --format="get(address)")
 
 #CREATE A VM FROM THE SHINY MENU BASE IMAGE
 
