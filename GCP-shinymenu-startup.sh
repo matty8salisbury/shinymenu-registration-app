@@ -11,8 +11,7 @@
 #CREATE A STATIC IP ADDRESS
 
 gcloud compute addresses create venuename-ip \
-    --global \
-    --ip-version IPV4
+    --region=europe-west1
 
 statip=$(gcloud compute addresses describe --global venuename-ip --format="get(address)")
 
