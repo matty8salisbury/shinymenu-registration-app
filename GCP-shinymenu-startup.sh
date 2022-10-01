@@ -22,7 +22,7 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --project=shinymenu-test-01 \
 --zone=europe-west1-b \
 --machine-type=e2-micro \
---network-interface=network-tier=PREMIUM,subnet=default \
+#--network-interface=network-tier=PREMIUM,subnet=default \
 --metadata=startup-script=sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\ PRIVILEGES\;\" \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
