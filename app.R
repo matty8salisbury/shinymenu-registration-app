@@ -60,7 +60,7 @@ shinyUI <- fluidPage(
     tabPanel(title = "Registration Complete", value = "panel3",
              
              helpText("Thank you for registering with shiny menu!"),
-             helpText("Your site should now be available at the address below.  Please be sure to click the first link first (the second won't work otherwise)."),
+             helpText("Your site should now be available at the address below.  Please be sure to click the first link (Venue End Link) and LOG IN before clciking the Customer App (the second won't work otherwise)."),
              helpText("It is strongly recommended that you read the user guide and carefully consider how to use the app suite in your business."),
              #helpText(textOutput(outputId = "pubEndAddress")),
              #helpText(textOutput(outputId = "orderAppAddress"))
@@ -236,13 +236,13 @@ shinyServer <- function(input, output, session) {
     #         )
     #  )
     
-    pubEndUrl <- a("Google Homepage", href=paste0("https://" 
+    pubEndUrl <- a("Venue End App", href=paste0("https://" 
                                             ,gsub("_", "-", tolower(venueName))
                                             , ".shinymenu.online/PubEnd"
     ))
     
     output$pubEndLink <- renderUI({
-      tagList("PubEnd URL link:", pubEndUrl)
+      tagList("Venue End link. Please Follow this first and Login before clicking the second link:", pubEndUrl)
     })
     
     #output$orderAppAddress = renderText(
@@ -252,13 +252,13 @@ shinyServer <- function(input, output, session) {
     #  )
     #)
     
-    orderAppUrl <- a("Google Homepage", href=paste0("https://" 
+    orderAppUrl <- a("Customer App", href=paste0("https://" 
                                                   ,gsub("_", "-", tolower(venueName))
                                                   , ".shinymenu.online/OrderApp"
     ))
     
     output$orderAppLink <- renderUI({
-      tagList("OrderApp URL link:", orderAppUrl)
+      tagList("Customer App link:", orderAppUrl)
     })
     
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
