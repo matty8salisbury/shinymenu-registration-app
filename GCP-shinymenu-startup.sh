@@ -62,8 +62,8 @@ gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.on
 
 gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "cd /etc/nginx/sites-enabled && sudo ln -s ../sites-available/shiny.conf"
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
-
 
 #RUN CERTBOT
 
