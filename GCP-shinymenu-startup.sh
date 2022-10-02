@@ -52,25 +52,25 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 
 #CREATE DNS
 
-# gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.online. \
-# --type="A" \
-# --zone="shinymenu-zone" \
-# --rrdatas=$statip \
-# --ttl="300"
-# 
+gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.online. \
+ --type="A" \
+ --zone="shinymenu-zone" \
+ --rrdatas=$statip \
+ --ttl="300"
+ 
 # #COPY ACROSS HTTP CONFIG FILE
-# 
-# gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "cd /etc/nginx/sites-enabled && sudo ln -s ../sites-available/shiny.conf"
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
-# 
+ 
+gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "cd /etc/nginx/sites-enabled && sudo ln -s ../sites-available/shiny.conf"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
+ 
 # #RUN CERTBOT
-# 
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo certbot certonly --nginx -d --non-interactive venuename.shinymenu.online"
-# 
+ 
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo certbot certonly --nginx -d venuename.shinymenu.online --non-interactive --agree-tos --email matty8salisbury@gmail.com"
+ 
 # #COPY ACROSS HTTPS CONFIG FILE
-# 
-# gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
-# gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
+ 
+gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
+gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
