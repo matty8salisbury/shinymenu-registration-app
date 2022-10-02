@@ -55,7 +55,7 @@ shinyUI <- fluidPage(
              #Confirm Submission button
              actionButton(inputId = "confirmButton", label = "Confirm & Proceed"),
              
-             helpText("After clicking 'Confirm & Proceed', please wait a few moments.  You will be redirected to a completion screen once the process is complete."),
+             helpText("After clicking 'Confirm & Proceed', please wait.  This can take around 5 minutes.  You will be redirected to a completion screen once the process is complete."),
     ),
     tabPanel(title = "Registration Complete", value = "panel3",
              
