@@ -60,8 +60,12 @@ shinyUI <- fluidPage(
     tabPanel(title = "Registration Complete", value = "panel3",
              
              helpText("Thank you for registering with shiny menu!"),
-             helpText("Your site will be available shortly at the address below.  In some cases, it can take up to 24 hours due to internet propagation."),
-             helpText(textOutput(outputId = "venueName"))
+             helpText("Your site should now be available at the address below.  Please be sure to click the first link first (the second won't work otherwise)."),
+             helpText("It is strongly recommended that you read the user guide and carefully consider how to use the app suite in your business."),
+             #helpText(textOutput(outputId = "pubEndAddress")),
+             #helpText(textOutput(outputId = "orderAppAddress"))
+             uiOutput("pubEndLink"),
+             uiOutput("orderAppLink")
 
     )
   )
@@ -225,14 +229,37 @@ shinyServer <- function(input, output, session) {
     
     #PREPARE CONFIRMATION OUTPUT TO USER
     
-    output$venueName = renderText(
-      paste0("https://" 
-             ,gsub("'", "1"
-                   , gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode)))
-                   )
-             , ".shinymenu.online"
-             )
-      )
+    #output$pubEndAddress = renderText(
+    #  paste0("https://" 
+    #         ,gsub("_", "-", tolower(venueName))
+    #         , ".shinymenu.online/PubEnd"
+    #         )
+    #  )
+    
+    pubEndUrl <- a("Google Homepage", href=paste0("https://" 
+                                            ,gsub("_", "-", tolower(venueName))
+                                            , ".shinymenu.online/PubEnd"
+    ))
+    
+    output$pubEndLink <- renderUI({
+      tagList("PubEnd URL link:", pubEndUrl)
+    })
+    
+    #output$orderAppAddress = renderText(
+    #  paste0("https://" 
+    #         ,gsub("_", "-", tolower(venueName))
+    #         , ".shinymenu.online/OrderApp"
+    #  )
+    #)
+    
+    orderAppUrl <- a("Google Homepage", href=paste0("https://" 
+                                                  ,gsub("_", "-", tolower(venueName))
+                                                  , ".shinymenu.online/OrderApp"
+    ))
+    
+    output$orderAppLink <- renderUI({
+      tagList("OrderApp URL link:", orderAppUrl)
+    })
     
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
