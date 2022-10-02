@@ -238,9 +238,9 @@ shinyServer <- function(input, output, session) {
     
     pubEndUrl <- a("Venue End App", href=paste0("https://" 
                                             ,gsub("_", "-", tolower(venueName))
-                                            , ".shinymenu.online/PubEnd"
-                                            , target="_blank"
-    ))
+                                            , ".shinymenu.online/PubEnd")
+                   , target="_blank"
+                   )
     
     output$pubEndLink <- renderUI({
       tagList("Venue End link. Please Follow this first and Login before clicking the second link:", pubEndUrl)
@@ -255,9 +255,9 @@ shinyServer <- function(input, output, session) {
     
     orderAppUrl <- a("Customer App", href=paste0("https://" 
                                                  ,gsub("_", "-", tolower(venueName))
-                                                 , ".shinymenu.online/OrderApp"
-                                                 , target="_blank"
-    ))
+                                                 , ".shinymenu.online/OrderApp")
+                     ,target="_blank"
+                     )
     
     output$orderAppLink <- renderUI({
       tagList("Customer App link:", orderAppUrl)
