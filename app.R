@@ -175,6 +175,17 @@ shinyServer <- function(input, output, session) {
       args = c(
         "-i",
         "-e", 
+        paste0("s/Venue_Name/", venueName, "/g"),
+        paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
+      ), 
+      stdout = TRUE
+    )
+    
+    system2(
+      command="sed", 
+      args = c(
+        "-i",
+        "-e", 
         paste0("s/sqlusername/", venueName, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
       ), 
