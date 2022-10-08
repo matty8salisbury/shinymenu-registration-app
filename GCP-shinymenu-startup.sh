@@ -52,6 +52,12 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 
 #CREATE DNS
 
+gcloud dns --project=shinymenu-test-01 record-sets remove venuename.shinymenu.online. \
+ --type="A" \
+ --zone="shinymenu-zone" \
+ --rrdatas=$statip \
+ --ttl="300"
+
 gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.online. \
  --type="A" \
  --zone="shinymenu-zone" \
