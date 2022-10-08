@@ -22,13 +22,13 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --zone=europe-west1-b \
 --machine-type=e2-micro \
 --address=$statip \
---metadata=startup-script=sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\ PRIVILEGES\;\" \
+--metadata=startup-script=sudo\ R\ -e\ \"library\(shinymanager\)\;\ credentials\ \<-\ data.frame\(user\ =\ c\(\'venuename\',\ \'matt\'\),\ password\ =\ c\(\'venuepassword\',\ \'stokeHaveWonIt31\?\'\),\ admin\ =\ c\(FALSE,\ TRUE\),\ stringsAsFactors\ =\ FALSE\)\;create_db\(credentials_data\ =\ credentials,\ sqlite_path\ =\ \'c:/shinymenu/database.sqlite\',\ passphrase\ =\ \'bananaVacuum291\?\'\)\"$'\n'sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\\\ PRIVILEGES\;\" \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
 --service-account=shinymenu-user-sa-001@shinymenu-test-01.iam.gserviceaccount.com \
 --scopes=https://www.googleapis.com/auth/cloud-platform \
 --min-cpu-platform=Automatic \
---tags=shiny-server,http-server,https-server \
+--tags=http-server,https-server \
 --no-shielded-secure-boot \
 --shielded-vtpm \
 --shielded-integrity-monitoring \
@@ -48,7 +48,6 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 gcloud compute scp /home/shiny/OrderApp/price_list-venuename.csv serviceAccount@venuename-shinymenu-machine:~/price_list.csv --zone=europe-west1-b --quiet
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo cp ~/price_list.csv /home/shiny/PubEnd/"
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/price_list.csv /home/shiny/OrderApp/"
-
 
 #CREATE DNS
 
@@ -74,3 +73,9 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
+
+
+# Init DB using credentials data
+#sudo R -e "library(shinymanager); credentials <- data.frame(user = c('venuename', 'matt'), password = c('venuepassword', 'stokeHaveWonIt31?'), admin = c(FALSE, TRUE), stringsAsFactors = FALSE);create_db(credentials_data = credentials, sqlite_path = 'c:/shinymenu/database.sqlite', passphrase = 'bananaVacuum291?')"
+#sudo mysql -e "CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd';GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;FLUSH\ PRIVILEGES;"
+

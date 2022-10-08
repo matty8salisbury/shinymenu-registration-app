@@ -55,7 +55,8 @@ shinyUI <- fluidPage(
              #Confirm Submission button
              actionButton(inputId = "confirmButton", label = "Confirm & Proceed"),
              
-             helpText("After clicking 'Confirm & Proceed', please wait.  This can take around 5 minutes.  You will be redirected to a completion screen once the process is complete."),
+             helpText("After clicking 'Confirm & Proceed', please wait.  This can take around 5 minutes and you MUST remain connected to the internet for all of that time."),
+             helpText("You will be redirected to a completion screen once the process is complete."),
     ),
     tabPanel(title = "Registration Complete", value = "panel3",
              
@@ -150,7 +151,7 @@ shinyServer <- function(input, output, session) {
     system2(command="sed", args = c("-i", "-e", paste0("s/",'"Bananaman',"'s ",'Bar"/','"', venueDisplayName, '"/g'), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
 
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
@@ -186,6 +187,17 @@ shinyServer <- function(input, output, session) {
         "-i",
         "-e", 
         paste0("s/sqlpassword/", venuePassword, "/g"),
+        paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
+      ), 
+      stdout = TRUE
+    )
+    
+    system2(
+      command="sed", 
+      args = c(
+        "-i",
+        "-e", 
+        paste0("s/venuepassword/", venuePassword, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
       ), 
       stdout = TRUE
@@ -272,8 +284,4 @@ shinyServer <- function(input, output, session) {
   
 }
 
-
 shinyApp(ui = shinyUI, server = shinyServer)
-
-
-
