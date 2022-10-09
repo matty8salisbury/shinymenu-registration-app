@@ -124,7 +124,8 @@ shinyServer <- function(input, output, session) {
     venueDisplayName <- trimws(input$displayName)
     if(nchar(venueDisplayName) > 40) {venueDisplayName <- substring(venueDisplayName, 1, 40)}
     venuePostcode <- trimws(input$postcode)
-    venuePassword <- trimws(input$password)
+    #venuePassword <- trimws(input$password)
+    venuePassword <- paste0("p",sprintf("%08d", round(runif(1)*1e8,0)))
     
     passwords <- function(nl = 10, npw = 1, help = FALSE) {
       if (help) return("gives npw passwords with nl characters each")
@@ -149,9 +150,9 @@ shinyServer <- function(input, output, session) {
     system2(command="cp", args = c("/home/shiny/OrderApp/venueinfo.R", paste0("/home/shiny/OrderApp/venueinfo-",gsub("_", "-", tolower(venueName)),".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/Bananaman1s_Bar_PE27_6TN/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/",'"Bananaman',"'s ",'Bar"/','"', venueDisplayName, '"/g'), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
-    system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    #system2(command="sed", args = c("-i", "-e", paste0("s/mypassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
     system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisUsername/", venueName, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
-    #system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
+    system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", venuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
 
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
     
