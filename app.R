@@ -22,8 +22,11 @@ shinyUI <- fluidPage(
     tabPanel(title = "Register", value = "panel1",
              #Provide Display Name, Postcode, Password
              
+             #Zone
+             uiOutput(outputId = "SelectedZone"),
+             
              #Display Name
-             textInput(inputId = "displayName", label = HTML("Business Name <br> (as you would like it displayed in the app - 40 characters or less)")),
+             textInput(inputId = "displayName", label = HTML("Business Name <br> <i>(as you would like it displayed in the app - 40 characters or less)")),
              
              #Postcode
              textInput(inputId = "postcode", label = "Business Postcode"),
@@ -34,6 +37,9 @@ shinyUI <- fluidPage(
              #data file
              fileInput(inputId = "priceListfile", label = "Upload Pricelist (csv file)", accept = ".csv"),
 
+             #Select time used
+             uiOutput(outputId = "selectedShift"),
+             
              #Submit button
              actionButton(inputId = "registerButton", label = "Submit Registration")
              
@@ -45,9 +51,9 @@ shinyUI <- fluidPage(
              
              textOutput(outputId = "displayNameCheck"),
              textOutput(outputId = "postcodeCheck"),
+             textOutput(outputId = "shiftCheck"),
              #textOutput(outputId = "password"),
              tableOutput(outputId = "priceList"),
-             
              
              #Confirm Submission button
              actionButton(inputId = "backButton", label = "Back"),
@@ -85,6 +91,15 @@ shinyServer <- function(input, output, session) {
   output$displayNameCheck = renderText(paste0("Business Name: ",input$displayName))
   output$postcodeCheck = renderText(paste0("Postcode: ",input$postcode))
   output$passwordCheck = renderText(paste0("Password: ",input$password))
+  output$shiftCheck = renderText(paste0("Time On / Cost per month: ",input$shift))
+  
+  zoneListNames <- read.csv(file = "gcp_zones.csv", header = T)
+  zoneList <- as.list(zoneListNames$gcp_zone_name)
+  
+  output$SelectedZone <- renderUI({selectInput(inputId = 'zoneName',
+                                              label = div(HTML("International Zone <br> <i>for UK select Europe/London"), style="margin-top:10px"),
+                                              choices = zoneList)})
+  
   
   output$priceList <- renderTable({
     file <- input$priceListfile
@@ -98,12 +113,20 @@ shinyServer <- function(input, output, session) {
     
     priceList
   })
+  
+  output$selectedShift <- renderUI({selectInput(inputId = 'shift',
+                                               label = HTML("Time On: <br> 
+                                               <i>Early (6am-6pm) <br>
+                                               <i>Late (12pm-12am) <br> 
+                                               <i>Always"),
+                                               choices = c("Early (£10 per month)", "Late (£10 per month)", "Always (£18 per month)"))})
 
   
   observeEvent(input$registerButton, {
     
     hideTab(inputId = "inTabset", target = "panel1")
     showTab(inputId = "inTabset", target = "panel2")
+    
   })
   
   observeEvent(input$backButton, {
@@ -120,6 +143,9 @@ shinyServer <- function(input, output, session) {
     
     #CREATE INFORMATION TO REPLACE IN TEMPLATE FILES
     
+    zoneName <- input$zoneName
+    zone <- paste0(zoneListNames$gcp_zone[zoneListNames$gcp_zone_name == zoneName], "-a")
+    shift <- input$shift
     venueName <- gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode))))
     venueDisplayName <- trimws(input$displayName)
     if(nchar(venueDisplayName) > 40) {venueDisplayName <- substring(venueDisplayName, 1, 40)}
@@ -237,6 +263,36 @@ shinyServer <- function(input, output, session) {
       stdout = TRUE
     )
     
+    #REPLACE INFORMATION IN START AND STOP FILES USED BY SYSTEMD TIMER
+    
+    if(shift == "Early (£10 per month)"){
+      scheduleStartFile <- "/home/shiny/startUps6.sh"
+      scheduleStopFile <- "/home/shiny/shutDowns6.sh"
+    }
+      
+    if(shift == "Late (£10 per month)") {
+      scheduleStartFile <- "/home/shiny/startUps12.sh"
+      scheduleStopFile <- "/home/shiny/shutDowns12.sh"
+    }
+    
+    if(shift != "Always (£18 per month") {
+      #start file
+      txShift <- readLines(con = scheduleStartFile)
+      if(length(grep(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), txShift))==1){
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), paste0("/snap/bin/gcloud compute instances start", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)  
+      } else{
+        txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
+      }
+      #stop file
+      txShift <- readLines(con = scheduleStopFile)
+      if(length(grep(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), txShift))==1){
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), paste0("/snap/bin/gcloud compute instances stop", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)  
+      } else{
+        txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
+      }
+      writeLines(txShift2, con = scheduleStopFile)
+    }
+
     #PASS SQL REQUIRED VARS
     tx <- readLines(con = paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh"))
     tx2 <- gsub("sqluid", venueName, x=tx)
