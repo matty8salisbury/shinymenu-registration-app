@@ -52,6 +52,7 @@ shinyUI <- fluidPage(
              textOutput(outputId = "displayNameCheck"),
              textOutput(outputId = "postcodeCheck"),
              textOutput(outputId = "shiftCheck"),
+             textOutput(outputId = "userName"),
              #textOutput(outputId = "password"),
              tableOutput(outputId = "priceList"),
              
@@ -71,7 +72,6 @@ shinyUI <- fluidPage(
              helpText("It is strongly recommended that you read the user guide and carefully consider how to use the app suite in your business."),
              #helpText(textOutput(outputId = "pubEndAddress")),
              #helpText(textOutput(outputId = "orderAppAddress"))
-             helpText(paste0("Username: ", gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode)))))),
              uiOutput("pubEndLink"),
              uiOutput("orderAppLink")
 
@@ -93,6 +93,7 @@ shinyServer <- function(input, output, session) {
   output$postcodeCheck = renderText(paste0("Postcode: ",input$postcode))
   output$passwordCheck = renderText(paste0("Password: ",input$password))
   output$shiftCheck = renderText(paste0("Time On / Cost per month: ",input$shift))
+  output$userName = renderText(paste0("User Name: ", gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode))))))
   
   zoneListNames <- read.csv(file = "gcp_zones.csv", header = T)
   zoneList <- as.list(zoneListNames$gcp_zone_name)
