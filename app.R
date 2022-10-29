@@ -52,7 +52,6 @@ shinyUI <- fluidPage(
              textOutput(outputId = "displayNameCheck"),
              textOutput(outputId = "postcodeCheck"),
              textOutput(outputId = "shiftCheck"),
-             textOutput(outputId = "userName"),
              #textOutput(outputId = "password"),
              tableOutput(outputId = "priceList"),
              
