@@ -71,7 +71,7 @@ shinyUI <- fluidPage(
              helpText("It is strongly recommended that you read the user guide and carefully consider how to use the app suite in your business."),
              #helpText(textOutput(outputId = "pubEndAddress")),
              #helpText(textOutput(outputId = "orderAppAddress"))
-             helpText(paste0("Username: ", venueName)),
+             helpText(paste0("Username: ", gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode)))))),
              uiOutput("pubEndLink"),
              uiOutput("orderAppLink")
 
