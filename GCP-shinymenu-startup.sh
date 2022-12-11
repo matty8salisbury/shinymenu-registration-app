@@ -22,7 +22,7 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --zone=europe-west1-b \
 --machine-type=e2-micro \
 --address=$statip \
---metadata=^,@^startup-script=sudo\ R\ -e\ \"library\(shinymanager\)\;\ credentials\ \<-\ data.frame\(user\ =\ c\(\'Venue_Name\',\ \'matt\'\),\ password\ =\ c\(\'venuepassword\',\ \'stokeHaveWonIt31\?\'\),\ admin\ =\ c\(FALSE,\ TRUE\),\ stringsAsFactors\ =\ FALSE\)\;create_db\(credentials_data\ =\ credentials,\ sqlite_path\ =\ \'/home/shiny/database.sqlite\',\ passphrase\ =\ \'bananaVacuum291\?\'\)\"$'\n'sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\\\ PRIVILEGES\;\" \
+--metadata=^,@^startup-script=sudo\ R\ -e\ \"library\(shinymanager\)\;\ credentials\ \<-\ data.frame\(user\ =\ c\(\'Venue_Name\',\ \'****\'\),\ password\ =\ c\(\'venuepassword\',\ \'****************\?\'\),\ admin\ =\ c\(FALSE,\ TRUE\),\ stringsAsFactors\ =\ FALSE\)\;create_db\(credentials_data\ =\ credentials,\ sqlite_path\ =\ \'/home/shiny/database.sqlite\',\ passphrase\ =\ \'bananaVacuum291\?\'\)\"$'\n'sudo\ mysql\ -e\ \"CREATE\ USER\ \'sqluid\'@\'localhost\'\ IDENTIFIED\ BY\ \'sqlpwd\'\;GRANT\ ALL\ PRIVILEGES\ ON\ \*.\*\ TO\ \'sqluid\'@\'localhost\'\ WITH\ GRANT\ OPTION\;FLUSH\\\ PRIVILEGES\;\" \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
 --service-account=shinymenu-user-sa-001@shinymenu-test-01.iam.gserviceaccount.com \
@@ -78,4 +78,5 @@ gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west
 # Init DB using credentials data
 #sudo R -e "library(shinymanager); credentials <- data.frame(user = c('venuename', 'matt'), password = c('venuepassword', 'stokeHaveWonIt31?'), admin = c(FALSE, TRUE), stringsAsFactors = FALSE);create_db(credentials_data = credentials, sqlite_path = 'c:/shinymenu/database.sqlite', passphrase = 'bananaVacuum291?')"
 #sudo mysql -e "CREATE USER 'sqluid'@'localhost' IDENTIFIED BY 'sqlpwd';GRANT ALL PRIVILEGES ON *.* TO 'sqluid'@'localhost' WITH GRANT OPTION;FLUSH\ PRIVILEGES;"
-
+# replace venuename and venuepassword if required
+#sudo R -e "library(shinymanager); credentials <- data.frame(user = c('venuename', '****'), password = c('venuepassword', '****************?'), admin = c(FALSE, TRUE), stringsAsFactors = FALSE);create_db(credentials_data = credentials, sqlite_path = '/home/shiny/database.sqlite', passphrase = 'bananaVacuum291?')"
