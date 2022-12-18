@@ -139,10 +139,6 @@ shinyServer <- function(input, output, session) {
   
   observeEvent(input$confirmButton, {
     
-    hideTab(inputId = "inTabset", target = "panel1")
-    hideTab(inputId = "inTabset", target = "panel2")
-    showTab(inputId = "inTabset", target = "panel3")
-    
     #CREATE INFORMATION TO REPLACE IN TEMPLATE FILES
     
     zoneName <- input$zoneName
@@ -348,8 +344,24 @@ shinyServer <- function(input, output, session) {
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
     system2(command = "chmod", args=c("+x", paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")))
+    
+    #delay execution of script until price list file upload has completed
+    while (!file.exists(paste("/home/shiny/OrderApp/price_list-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))) {
+      Sys.sleep(10)
+      }
+    
     system2(command = "bash", args=c(paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")))
     
+    #delay opening of completion screen until script has run
+    while (!file.exists(paste("/home/shiny/shinymenu-registration-app/finished-", gsub("_", "-", tolower(venueName)), ".txt", sep=""))) {
+      Sys.sleep(10)
+    }
+    
+    hideTab(inputId = "inTabset", target = "panel1")
+    hideTab(inputId = "inTabset", target = "panel2")
+    showTab(inputId = "inTabset", target = "panel3")
+    
+    system2(command = "rm", args=c(paste("/home/shiny/shinymenu-registration-app/finished-", gsub("_", "-", tolower(venueName)), ".txt", sep="")))
   })
   
 }

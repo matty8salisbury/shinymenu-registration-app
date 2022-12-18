@@ -36,7 +36,18 @@ gcloud beta compute instances create venuename-shinymenu-machine \
 --source-machine-image=shinymenu-base-machine-image-001
 
 wait
-sleep 60
+
+#check if machine is up and running before using ssh
+ready="wait"
+while [ $ready != "go" ]
+do
+IP=$(gcloud compute instances list | awk '/'venuename'/ {print $5}')
+if nc -w 1 -z $IP 22; then
+   ready="go"
+   echo $ready 
+   sleep 10
+fi
+done
 
 #COPY ACROSS THE venueinfo.R FILE
 
@@ -56,7 +67,9 @@ gcloud dns --project=shinymenu-test-01 record-sets create venuename.shinymenu.on
  --zone="shinymenu-zone" \
  --rrdatas=$statip \
  --ttl="300"
- 
+
+wait
+
 # #COPY ACROSS HTTP CONFIG FILE
  
 gcloud compute scp /home/shiny/shinymenu-registration-app/http-venuename-shiny.conf serviceAccount@venuename-shinymenu-machine:~/shiny.conf --zone=europe-west1-b --quiet
@@ -74,6 +87,8 @@ gcloud compute scp /home/shiny/shinymenu-registration-app/https-venuename-shiny.
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo mv -f ~/shiny.conf /etc/nginx/sites-available/shiny.conf"
 gcloud compute ssh serviceAccount@venuename-shinymenu-machine --zone=europe-west1-b --quiet --command "sudo systemctl restart nginx"
 
+# #CREATE A FILE TO LET SHINY KNOW THAT THE SCRIPT IS FINISHED
+touch /home/shiny/shinymenu-registration-app/finished-venuename.txt
 
 # Init DB using credentials data
 #sudo R -e "library(shinymanager); credentials <- data.frame(user = c('venuename', 'matt'), password = c('venuepassword', 'stokeHaveWonIt31?'), admin = c(FALSE, TRUE), stringsAsFactors = FALSE);create_db(credentials_data = credentials, sqlite_path = 'c:/shinymenu/database.sqlite', passphrase = 'bananaVacuum291?')"
