@@ -5,6 +5,8 @@
 #install libraries for Shiny
 library("shiny")
 library("shinyWidgets")
+library("tools")
+library("qrcode")
 
 #3. Shiny UI function
 
@@ -73,7 +75,10 @@ shinyUI <- fluidPage(
              #helpText(textOutput(outputId = "orderAppAddress"))
              helpText(textOutput(outputId = "userName")),
              uiOutput("pubEndLink"),
-             uiOutput("orderAppLink")
+             uiOutput("orderAppLink"),
+             helptext("Here is a qr code to take your customers to your site (picture and download link"),
+             downloadButton("save", "Download QR"),
+             plotOutput("tplot" ) 
 
     )
   )
@@ -299,11 +304,9 @@ shinyServer <- function(input, output, session) {
 
     #SAVE PRICE LIST TO CORRECT LOCATION
     
-    output$priceList <- renderTable({
-      file <- input$priceListfile
-      priceList <- read.csv(file$datapath, header = T)
-      write.csv(x=priceList, file=paste("/home/shiny/OrderApp/price_list-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
-    })
+    file <- input$priceListfile
+    priceList <- read.csv(file$datapath, header = T)
+    write.csv(x=priceList, file=paste("/home/shiny/OrderApp/price_list-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
     
     #PREPARE CONFIRMATION OUTPUT TO USER
     
@@ -340,6 +343,28 @@ shinyServer <- function(input, output, session) {
     output$orderAppLink <- renderUI({
       tagList("Customer App link:", orderAppUrl)
     })
+    
+    #plot qr code and give a download link
+
+    qr <- qr_code(orderAppUrl)
+    tplot <- plot(qr)
+      
+    output$tplot <- renderPlot({
+      tplot()
+    })
+    
+    # downloadHandler contains 2 arguments as functions, namely filename, content
+    output$save <- downloadHandler(
+      filename =  function() {
+        paste("myplot.pdf")
+      },
+      # content is a function with argument file. content writes the plot to the device
+      content = function(file) {
+        pdf(file) # open the pdf device
+        plot(qr_code(orderAppUrl)) # draw the plot
+        dev.off()  # turn the device off
+      } 
+    )
     
     #RUN BASH SHELL SCRIPT TO PROVISION GCP RESOURCES
     
