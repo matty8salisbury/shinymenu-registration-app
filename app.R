@@ -77,7 +77,7 @@ shinyUI <- fluidPage(
              uiOutput("pubEndLink"),
              uiOutput("orderAppLink"),
              helpText("Here is a qr code to take your customers to your site (picture and download link"),
-             downloadButton("save", "Download QR")
+             downloadButton(outputId="save", label = "Download QR")
              #plotOutput("tplot" ) 
 
     )
@@ -355,7 +355,7 @@ shinyServer <- function(input, output, session) {
     # downloadHandler contains 2 arguments as functions, namely filename, content
     output$save <- downloadHandler(
       filename =  function() {
-        paste(venueName, "QRcode.pdf")
+        paste(venueName, "QRcode.png")
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
