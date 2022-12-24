@@ -354,11 +354,9 @@ shinyServer <- function(input, output, session) {
     
     # downloadHandler contains 2 arguments as functions, namely filename, content
     output$save <- downloadHandler(
-      filename =  function() {
-        paste(venueName, "QRcode.png")
-      },
+      filename = paste(venueName, "QRcode.png"),
       # content is a function with argument file. content writes the plot to the device
-      content = function(file) {
+      content = function(file = paste(orderAppurl, ".png")) {
         png(file, width = 300, height = 300)
         print(qrcode_gen(orderAppUrl))
         dev.off()  # turn the device off
