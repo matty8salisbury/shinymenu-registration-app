@@ -77,7 +77,7 @@ shinyUI <- fluidPage(
              uiOutput("pubEndLink"),
              uiOutput("orderAppLink"),
              helpText("Here is a qr code to take your customers to your site (picture and download link"),
-             downloadButton("save", "Download QR"),
+             downloadButton("save", "Download QR")
              #plotOutput("tplot" ) 
 
     )
