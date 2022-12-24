@@ -76,9 +76,9 @@ shinyUI <- fluidPage(
              helpText(textOutput(outputId = "userName")),
              uiOutput("pubEndLink"),
              uiOutput("orderAppLink"),
-             helptext("Here is a qr code to take your customers to your site (picture and download link"),
+             helpText("Here is a qr code to take your customers to your site (picture and download link"),
              downloadButton("save", "Download QR"),
-             plotOutput("tplot" ) 
+             #plotOutput("tplot" ) 
 
     )
   )
@@ -184,112 +184,112 @@ shinyServer <- function(input, output, session) {
     system2(command="sed", args = c("-i", "-e", paste0("s/replaceThisPassword/", sqlVenuePassword, "/g"), paste0("/home/shiny/OrderApp/venueinfo-", gsub("_", "-", tolower(venueName)), ".R")), stdout = TRUE)
 
     #REPLACE venuename IN SHELL SCRIPT TO CREATE GCP RESOURCES
-    
+
     system2(command="cp", args = c("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup.sh", paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")), stdout = TRUE)
     system2(command="cp", args = c("/home/shiny/shinymenu-registration-app/http-venuename-shiny.conf", paste0("/home/shiny/shinymenu-registration-app/http-",gsub("_", "-", tolower(venueName)),"-shiny.conf")), stdout = TRUE)
     system2(command="cp", args = c("/home/shiny/shinymenu-registration-app/https-venuename-shiny.conf", paste0("/home/shiny/shinymenu-registration-app/https-",gsub("_", "-", tolower(venueName)),"-shiny.conf")), stdout = TRUE)
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
       "-i",
-      "-e", 
+      "-e",
       paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
       paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
-      ), 
+      ),
       stdout = TRUE
       )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/Venue_Name/", venueName, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/sqlusername/", venueName, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/sqlpassword/", sqlVenuePassword, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/venuepassword/", venuePassword, "/g"),
         paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
         paste0("/home/shiny/shinymenu-registration-app/http-",gsub("_", "-", tolower(venueName)),"-shiny.conf")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     system2(
-      command="sed", 
+      command="sed",
       args = c(
         "-i",
-        "-e", 
+        "-e",
         paste0("s/venuename/", gsub("_", "-", tolower(venueName)), "/g"),
         paste0("/home/shiny/shinymenu-registration-app/https-",gsub("_", "-", tolower(venueName)),"-shiny.conf")
-      ), 
+      ),
       stdout = TRUE
     )
-    
+
     #REPLACE INFORMATION IN START AND STOP FILES USED BY SYSTEMD TIMER
-    
+
     if(shift == "Early (£10 per month)"){
       scheduleStartFile <- "/home/shiny/startUps6.sh"
       scheduleStopFile <- "/home/shiny/shutDowns6.sh"
     }
-      
+
     if(shift == "Late (£10 per month)") {
       scheduleStartFile <- "/home/shiny/startUps12.sh"
       scheduleStopFile <- "/home/shiny/shutDowns12.sh"
     }
-    
+
     if(shift != "Always (£18 per month") {
       #start file
       txShift <- readLines(con = scheduleStartFile)
       if(length(grep(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), txShift))==1){
-        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), paste0("/snap/bin/gcloud compute instances start", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)  
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), paste0("/snap/bin/gcloud compute instances start", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       } else{
         txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       }
       #stop file
       txShift <- readLines(con = scheduleStopFile)
       if(length(grep(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), txShift))==1){
-        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), paste0("/snap/bin/gcloud compute instances stop", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)  
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), paste0("/snap/bin/gcloud compute instances stop", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       } else{
         txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       }
@@ -303,32 +303,32 @@ shinyServer <- function(input, output, session) {
     writeLines(tx2, con = paste0("/home/shiny/shinymenu-registration-app/GCP-shinymenu-startup-",gsub("_", "-", tolower(venueName)),".sh"))
 
     #SAVE PRICE LIST TO CORRECT LOCATION
-    
+
     file <- input$priceListfile
     priceList <- read.csv(file$datapath, header = T)
     write.csv(x=priceList, file=paste("/home/shiny/OrderApp/price_list-", gsub("_", "-", tolower(venueName)), ".csv", sep=""))
-    
+
     #PREPARE CONFIRMATION OUTPUT TO USER
-    
+
     #output$pubEndAddress = renderText(
-    #  paste0("https://" 
+    #  paste0("https://"
     #         ,gsub("_", "-", tolower(venueName))
     #         , ".shinymenu.online/PubEnd"
     #         )
     #  )
-    
-    pubEndUrl <- a("Venue End App", href=paste0("https://" 
+
+    pubEndUrl <- a("Venue End App", href=paste0("https://"
                                             ,gsub("_", "-", tolower(venueName))
                                             , ".shinymenu.online/PubEnd")
                    , target="_blank"
                    )
-    
+
     output$pubEndLink <- renderUI({
       tagList("Venue End link. Please Follow this first and Login before clicking the second link:", pubEndUrl)
     })
-    
+
     #output$orderAppAddress = renderText(
-    #  paste0("https://" 
+    #  paste0("https://"
     #         ,gsub("_", "-", tolower(venueName))
     #         , ".shinymenu.online/OrderApp"
     #  )
@@ -346,22 +346,21 @@ shinyServer <- function(input, output, session) {
     
     #plot qr code and give a download link
 
-    qr <- qr_code(orderAppUrl)
-    tplot <- plot(qr)
+    #qr <- qr_code(orderAppUrl)
       
-    output$tplot <- renderPlot({
-      tplot()
-    })
+    #output$tplot <- renderPlot({
+    #  plot(qr)
+    #})
     
     # downloadHandler contains 2 arguments as functions, namely filename, content
     output$save <- downloadHandler(
       filename =  function() {
-        paste("myplot.pdf")
+        paste(venueName, "QRcode.pdf")
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
         pdf(file) # open the pdf device
-        plot(qr_code(orderAppUrl)) # draw the plot
+        print(qrcode_gen(orderAppUrl)) # draw the plot
         dev.off()  # turn the device off
       } 
     )
