@@ -359,8 +359,8 @@ shinyServer <- function(input, output, session) {
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
-        pdf(file) # open the pdf device
-        print(qrcode_gen(orderAppUrl)) # draw the plot
+        png(file, width = 300, height = 300)
+        print(qrcode_gen(orderAppUrl))
         dev.off()  # turn the device off
       } 
     )
