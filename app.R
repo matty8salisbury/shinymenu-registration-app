@@ -358,7 +358,7 @@ shinyServer <- function(input, output, session) {
       # content is a function with argument file. content writes the plot to the device
       content = function(file = paste(orderAppurl, ".png")) {
         png(file, width = 300, height = 300)
-        print(plot(qr_code(orderAppUrl)))
+        plot(qr_code(orderAppUrl))
         dev.off()  # turn the device off
       } 
     )
