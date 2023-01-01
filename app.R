@@ -148,6 +148,7 @@ shinyServer <- function(input, output, session) {
     
     zoneName <- input$zoneName
     zone <- paste0(zoneListNames$gcp_zone[zoneListNames$gcp_zone_name == zoneName], "-a")
+    tz_city <- zoneListNames$gcp_tz_city[zoneListNames$gcp_zone_name == zoneName]
     shift <- input$shift
     venueName <- gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode))))
     venueDisplayName <- trimws(input$displayName)
@@ -269,13 +270,13 @@ shinyServer <- function(input, output, session) {
     #REPLACE INFORMATION IN START AND STOP FILES USED BY SYSTEMD TIMER
 
     if(shift == "Early (£10 per month)"){
-      scheduleStartFile <- "/home/shiny/startUps6.sh"
-      scheduleStopFile <- "/home/shiny/shutDowns6.sh"
+      scheduleStartFile <- paste("/home/shiny/", tz_city, "StartUps6.sh", sep="")
+      scheduleStopFile <- paste("/home/shiny/", tz_city, "ShutDowns6.sh", sep="")
     }
 
     if(shift == "Late (£10 per month)") {
-      scheduleStartFile <- "/home/shiny/startUps12.sh"
-      scheduleStopFile <- "/home/shiny/shutDowns12.sh"
+      scheduleStartFile <- paste("/home/shiny/", tz_city, "StartUps12.sh", sep="")
+      scheduleStopFile <- paste("/home/shiny/", tz_city, "ShutDowns12.sh", sep="")
     }
 
     if(shift != "Always (£18 per month") {
@@ -286,6 +287,7 @@ shinyServer <- function(input, output, session) {
       } else{
         txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       }
+      writeLines(txShift2, con = scheduleStartFile)
       #stop file
       txShift <- readLines(con = scheduleStopFile)
       if(length(grep(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), txShift))==1){
