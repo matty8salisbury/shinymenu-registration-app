@@ -147,7 +147,7 @@ shinyServer <- function(input, output, session) {
     #CREATE INFORMATION TO REPLACE IN TEMPLATE FILES
     
     zoneName <- input$zoneName
-    zone <- paste0(zoneListNames$gcp_zone[zoneListNames$gcp_zone_name == zoneName], "-a")
+    zone <- zoneListNames$gcp_zone[zoneListNames$gcp_zone_name == zoneName]
     tz_city <- zoneListNames$gcp_tz_city[zoneListNames$gcp_zone_name == zoneName]
     shift <- input$shift
     venueName <- gsub("'", "1", gsub(" ", "_", paste0(trimws(input$displayName), " ", trimws(input$postcode))))
@@ -283,7 +283,7 @@ shinyServer <- function(input, output, session) {
       #start file
       txShift <- readLines(con = scheduleStartFile)
       if(length(grep(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), txShift))==1){
-        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), paste0("/snap/bin/gcloud compute instances start", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances start --zone=",zone), paste0("/snap/bin/gcloud compute instances start ", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       } else{
         txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       }
@@ -291,7 +291,7 @@ shinyServer <- function(input, output, session) {
       #stop file
       txShift <- readLines(con = scheduleStopFile)
       if(length(grep(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), txShift))==1){
-        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), paste0("/snap/bin/gcloud compute instances stop", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
+        txShift2 <- gsub(paste0("#/snap/bin/gcloud compute instances stop --zone=",zone), paste0("/snap/bin/gcloud compute instances stop ", "\\\\", "\n", tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       } else{
         txShift2 <- gsub(paste0("--zone=",zone), paste0(tolower(venueName), " \\\\", "\n--zone=", zone), x=txShift)
       }
